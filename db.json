@@ -1,0 +1,144 @@
+{
+  "empresasExternas": [
+    {
+      "id": 1,
+      "nome": "Empresa B",
+      "empresa": "Empresa QA Inc",
+      "numColaboradores": 45827,
+      "status": true
+    },
+    {
+      "id": 2,
+      "nome": "Empresa C",
+      "empresa": "Empresa TG Inc",
+      "numColaboradores": 48072,
+      "status": false
+    },
+    {
+      "id": 3,
+      "nome": "Empresa D",
+      "empresa": "Empresa DC Inc",
+      "numColaboradores": 7843,
+      "status": true
+    },
+    {
+      "id": 4,
+      "nome": "Empresa E",
+      "empresa": "Empresa SH Inc",
+      "numColaboradores": 2870,
+      "status": false
+    },
+    {
+      "id": 5,
+      "nome": "Empresa F",
+      "empresa": "Empresa TO Inc",
+      "numColaboradores": 18411,
+      "status": false
+    },
+    {
+      "id": 6,
+      "nome": "Empresa G",
+      "empresa": "Empresa RA Inc",
+      "numColaboradores": 34539,
+      "status": false
+    },
+    {
+      "id": 7,
+      "nome": "Empresa H",
+      "empresa": "Empresa PP Inc",
+      "numColaboradores": 17735,
+      "status": false
+    },
+    {
+      "id": 8,
+      "nome": "Empresa I",
+      "empresa": "Empresa XJ Inc",
+      "numColaboradores": 19233,
+      "status": false
+    },
+    {
+      "id": 9,
+      "nome": "Empresa J",
+      "empresa": "Empresa EY Inc",
+      "numColaboradores": 29616,
+      "status": false
+    },
+    {
+      "id": 10,
+      "nome": "Empresa K",
+      "empresa": "Empresa GE Inc",
+      "numColaboradores": 49719,
+      "status": true
+    },
+    {
+      "id": 11,
+      "nome": "Empresa L",
+      "empresa": "Empresa DL Inc",
+      "numColaboradores": 11459,
+      "status": true
+    },
+    {
+      "id": 12,
+      "nome": "Empresa M",
+      "empresa": "Empresa DO Inc",
+      "numColaboradores": 36938,
+      "status": true
+    },
+    {
+      "id": 13,
+      "nome": "Empresa N",
+      "empresa": "Empresa LY Inc",
+      "numColaboradores": 27741,
+      "status": true
+    },
+    {
+      "id": 14,
+      "nome": "Empresa O",
+      "empresa": "Empresa AH Inc",
+      "numColaboradores": 11024,
+      "status": true
+    },
+    {
+      "id": 15,
+      "nome": "Empresa P",
+      "empresa": "Empresa PZ Inc",
+      "numColaboradores": 36080,
+      "status": true
+    },
+    {
+      "id": 16,
+      "nome": "Empresa Q",
+      "empresa": "Empresa TW Inc",
+      "numColaboradores": 13179,
+      "status": true
+    },
+    {
+      "id": 17,
+      "nome": "Empresa R",
+      "empresa": "Empresa DV Inc",
+      "numColaboradores": 29621,
+      "status": true
+    },
+    {
+      "id": 18,
+      "nome": "Empresa S",
+      "empresa": "Empresa HD Inc",
+      "numColaboradores": 42704,
+      "status": false
+    },
+    {
+      "id": 19,
+      "nome": "Empresa T",
+      "empresa": "Empresa NT Inc",
+      "numColaboradores": 16744,
+      "status": false
+    },
+    {
+      "id": 20,
+      "nome": "Empresa U",
+      "empresa": "Empresa NB Inc",
+      "numColaboradores": 32291,
+      "status": false
+    }
+  ]
+}

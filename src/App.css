@@ -1,0 +1,114 @@
+.custom-menubar,
+.p-menubar-root-list {
+  background-color: #151515;
+  border-color: #151515;
+}
+
+.p-menuitem-text,
+.welcome {
+  color: white;
+}
+
+.p-menuitem-link:hover {
+  background-color: #410b8c;
+  border-color: #410b8c;
+  color: white;
+}
+
+.p-button-success,
+.btn-entrar,
+.btn-orange {
+  background-color: #410b8c;
+  border-color: #410b8c;
+  color: white;
+}
+.p-button {
+  background-color: #410b8c;
+}
+
+.p-button-success:hover,
+.btn-entrar:hover,
+.btn-orange:hover {
+  background-color: #410b8c;
+  color: aliceblue;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  transform: scale(1.1);
+}
+
+.btn-red-not-bg {
+  background-color: transparent;
+  border-color: rgb(255, 0, 0);
+  color: red;
+}
+
+.btn-orange-not-bg {
+  background-color: transparent;
+  border-color: #410b8c color #410b8c;
+}
+
+.btn-blue-not-bg {
+  background-color: transparent;
+  border-color: #0a66c2;
+  color: #0a66c2;
+}
+
+.linkedin-button {
+  background-color: #0077b5; /* Cor azul do LinkedIn */
+  color: white;
+  border: none;
+}
+
+.linkedin-button:hover {
+  background-color: #005f87; /* Azul escuro ao passar o mouse */
+}
+
+.p-button-danger {
+  background-color: red;
+  border-color: red;
+  color: white;
+}
+
+.p-button-warning {
+  background-color: #410b8c;
+  border-color: #410b8c;
+  color: white;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem; /* Adiciona um pouco de padding horizontal */
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem; /* Ajusta o espaço entre o título e o campo de busca */
+}
+
+.search-input {
+  width: 200px; /* Ajuste a largura do campo de busca conforme necessário */
+}
+
+.search-icon {
+  margin-left: -2rem; /* Ajusta o ícone para que fique sobre o campo de busca */
+  position: absolute; /* Posiciona o ícone sobre o campo de busca */
+  right: 1rem; /* Ajusta a posição do ícone dentro do campo de busca */
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    display: block; /* Altera de flex para block em telas menores */
+  }
+
+  .header-right {
+    margin-top: 0.8em;
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "teddy-vite",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "https://kayahaufe.github.io/teddy",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "js-cookie": "^3.0.5",
+    "primeflex": "^3.3.1",
+    "primeicons": "^7.0.0",
+    "primereact": "^10.8.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.0",
+    "styled-components": "^6.1.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^4.0.0",
+    "gh-pages": "^6.1.1"
+  }
+}
