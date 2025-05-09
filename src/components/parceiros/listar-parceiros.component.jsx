@@ -1,23 +1,27 @@
+// listar-parceiros.component.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import ParceirosService from "../../services/parceiros.service";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
-import { InputTextarea } from "primereact/inputtextarea";
-import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
+import { Dialog } from "primereact/dialog";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function ListarParceiros() {
-  let emptyPartner = {
-    name: "",
-    description: "",
+  const emptyPartner = {
+    id: null,
+    firstName: "",
+    lastName: "",
+    age: "",
     client: "",
     client2: "",
+    project: "",
+    project2: "",
   };
 
-  const [partners, setPartners] = useState(null);
+  const [partners, setPartners] = useState([]);
   const [partnerDialog, setPartnerDialog] = useState(false);
   const [deletePartnerDialog, setDeletePartnerDialog] = useState(false);
   const [partner, setPartner] = useState(emptyPartner);
@@ -32,30 +36,32 @@ export default function ListarParceiros() {
 
   const getParceiros = () => {
     ParceirosService.getParceiros()
-      .then((data) => setPartners(formatarDados(data))) // Ajusta os dados antes de setar
+      .then((data) => setPartners(formatarDados(data)))
       .catch((error) => console.error("Erro ao buscar parceiros:", error));
   };
 
-  const formatarDados = (users) => {
-    console.log(users);
-    return users.map((user) => ({
+  const formatarDados = (users) =>
+    users.map((user) => ({
       id: user.id,
-      name: `${user.firstName} ${user.lastName}`,
-      description: `Idade: ${user.age} anos`, // Usando "age" como uma descrição fictícia
-      clients: [user.company?.name || "Sem empresa"], // Coloca o nome da empresa como cliente
-      projects: [`Projeto ${user.id}`, `Projeto ${user.id + 1}`], // Criando projetos fictícios
+      firstName: user.firstName,
+      lastName: user.lastName,
+      fullName: `${user.firstName} ${user.lastName}`,
+      description: `Idade: ${user.age} anos`,
+      age: user.age,
+      clients: user.clients || [user.company?.name || "Sem empresa"],
+      projects: user.projects || [
+        `Projeto ${user.id}`,
+        `Projeto ${user.id + 1}`,
+      ],
     }));
-  };
 
-  // Atualiza a URL com os parâmetros da página atual
   const updateURLWithPage = (page, rows) => {
     const params = new URLSearchParams(location.search);
-    params.set("page", page + 1); // page começa em 0, então adicionamos 1 para a URL
+    params.set("page", page + 1);
     params.set("rows", rows);
     navigate({ search: params.toString() });
   };
 
-  // Função chamada ao mudar de página
   const onPageChange = (event) => {
     setCurrentPage(event.page);
     setRowsPerPage(event.rows);
@@ -64,10 +70,10 @@ export default function ListarParceiros() {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const pageFromURL = parseInt(params.get("page"), 10) || 1; // Padrão é 1 se não houver parâmetro
+    const pageFromURL = parseInt(params.get("page"), 10) || 1;
     const rowsFromURL = parseInt(params.get("rows"), 10) || 10;
 
-    setCurrentPage(pageFromURL - 1); // pageFromURL começa em 1 na URL, mas em 0 na tabela
+    setCurrentPage(pageFromURL - 1);
     setRowsPerPage(rowsFromURL);
     getParceiros();
   }, [location.search]);
@@ -90,139 +96,132 @@ export default function ListarParceiros() {
   const savePartner = () => {
     setSubmitted(true);
 
-    // Definir os arrays de clients e projects
-    partner.clients = [partner.client, partner.client2];
-    partner.projects = [partner.project, partner.project2];
-
-    // Remover os campos temporários
-    delete partner.client;
-    delete partner.client2;
-    delete partner.project;
-    delete partner.project2;
-
-    setPartnerDialog(false);
+    const payload = {
+      firstName: partner.firstName,
+      lastName: partner.lastName,
+      age: parseInt(partner.age),
+      clients: [partner.client, partner.client2],
+      projects: [partner.project, partner.project2],
+    };
 
     if (partner.id) {
-      ParceirosService.putParceiro(partner.id, partner)
+      ParceirosService.putParceiro(partner.id, payload)
         .then((response) => {
-          const savedPartner = response.data; // Dados completos vindos do backend
+          const updated = {
+            id: response.id,
+            firstName: response.firstName,
+            lastName: response.lastName,
+            fullName: `${response.firstName} ${response.lastName}`,
+            description: `Idade: ${response.age} anos`,
+            age: response.age,
+            clients: [partner.client, partner.client2],
+            projects: [partner.project, partner.project2],
+          };
 
-          let _partners = [...partners];
+          setPartners((prev) =>
+            prev.map((p) => (p.id === updated.id ? updated : p))
+          );
+          setPartner(emptyPartner);
+          setPartnerDialog(false);
 
-          const index = findIndexById(partner.id);
-          _partners[index] = savedPartner; // Atualizar o parceiro com os dados do backend
           toast.current.show({
             severity: "success",
             summary: "Sucesso!",
-            detail: "Parceiro Atualizado",
+            detail: "Parceiro atualizado",
             life: 3000,
           });
-
-          setPartners(_partners);
-          setPartner(emptyPartner);
         })
-        .catch((error) => {
-          // Tratar erro, se necessário
-          console.error("Erro ao salvar parceiro", error);
-        });
+        .catch((error) => console.error("Erro ao salvar parceiro", error));
     } else {
-      ParceirosService.postParceiro(partner)
+      ParceirosService.postParceiro(payload)
         .then((response) => {
-          const savedPartner = response.data; // Dados completos vindos do backend
+          const newPartner = {
+            id: response.id,
+            firstName: response.firstName,
+            lastName: response.lastName,
+            fullName: `${response.firstName} ${response.lastName}`,
+            description: `Idade: ${response.age} anos`,
+            age: response.age,
+            clients: response.clients || [partner.client, partner.client2],
+            projects: response.projects || [partner.project, partner.project2],
+          };
 
-          let _partners = [...partners];
+          setPartners((prev) => [...prev, newPartner]);
+          setPartner(emptyPartner);
+          setPartnerDialog(false);
 
-          _partners.push(savedPartner); // Adicionar o novo parceiro com os dados completos
           toast.current.show({
             severity: "success",
             summary: "Sucesso!",
-            detail: "Parceiro Cadastrado",
+            detail: "Parceiro cadastrado",
             life: 3000,
           });
-
-          setPartners(_partners);
-          setPartner(emptyPartner);
         })
-        .catch((error) => {
-          // Tratar erro, se necessário
-          console.error("Erro ao salvar parceiro", error);
-        });
+        .catch((error) => console.error("Erro ao cadastrar parceiro", error));
     }
   };
 
-  const editPartner = (partner) => {
-    partner.client = partner.clients[0];
-    partner.client2 = partner.clients[1];
-    partner.project = partner.projects[0];
-    partner.project2 = partner.projects[1];
-
-    setPartner({ ...partner });
+  const editPartner = (rowData) => {
+    setPartner({
+      id: rowData.id,
+      firstName: rowData.firstName,
+      lastName: rowData.lastName,
+      age: rowData.age,
+      client: rowData.clients?.[0] || "",
+      client2: rowData.clients?.[1] || "",
+      project: rowData.projects?.[0] || "",
+      project2: rowData.projects?.[1] || "",
+    });
     setPartnerDialog(true);
   };
 
-  const confirmDeletePartner = (partner) => {
-    setPartner(partner);
+  const confirmDeletePartner = (rowData) => {
+    setPartner(rowData);
     setDeletePartnerDialog(true);
   };
 
   const deletePartner = () => {
-    let _partners = partners.filter((val) => val.id !== partner.id);
+    ParceirosService.deleteParceiroById(partner.id).then(() => {
+      setPartners((prev) => prev.filter((p) => p.id !== partner.id));
+      setDeletePartnerDialog(false);
+      setPartner(emptyPartner);
 
-    setPartners(_partners);
-    setDeletePartnerDialog(false);
-    ParceirosService.deleteParceiroById(partner.id).then(() =>
       toast.current.show({
         severity: "success",
         summary: "Sucesso!",
-        detail: "Parceiro deletado.",
+        detail: "Parceiro deletado",
         life: 3000,
-      })
-    );
-  };
-
-  const findIndexById = (id) => {
-    let index = -1;
-
-    for (let i = 0; i < partners.length; i++) {
-      if (partners[i].id === id) {
-        index = i;
-        break;
-      }
-    }
-
-    return index;
+      });
+    });
   };
 
   const onInputChange = (e, name) => {
-    const val = (e.target && e.target.value) || "";
-    let _partner = { ...partner };
-
-    _partner[`${name}`] = val;
-
-    setPartner(_partner);
+    const val = e.target.value;
+    setPartner((prevState) => ({
+      ...prevState,
+      [name]: name === "age" ? parseInt(val) || 0 : val,
+    }));
   };
 
-  const actionBodyTemplate = (rowData) => {
-    return (
-      <React.Fragment>
-        <Button
-          icon="pi pi-pencil"
-          rounded
-          outlined
-          className="mr-2"
-          severity="warning"
-          onClick={() => editPartner(rowData)}
-        />
-        <Button
-          icon="pi pi-trash"
-          rounded
-          outlined
-          severity="danger"
-          onClick={() => confirmDeletePartner(rowData)}
-        />
-      </React.Fragment>
-    );
-  };
+  const actionBodyTemplate = (rowData) => (
+    <>
+      <Button
+        icon="pi pi-pencil"
+        rounded
+        outlined
+        className="mr-2"
+        severity="warning"
+        onClick={() => editPartner(rowData)}
+      />
+      <Button
+        icon="pi pi-trash"
+        rounded
+        outlined
+        severity="danger"
+        onClick={() => confirmDeletePartner(rowData)}
+      />
+    </>
+  );
 
   const header = (
     <div className="header-container">
@@ -250,7 +249,7 @@ export default function ListarParceiros() {
   );
 
   const partnerDialogFooter = (
-    <React.Fragment>
+    <>
       <Button
         label="Cancelar"
         icon="pi pi-times"
@@ -264,10 +263,11 @@ export default function ListarParceiros() {
         onClick={savePartner}
         className="btn-orange"
       />
-    </React.Fragment>
+    </>
   );
+
   const deletePartnerDialogFooter = (
-    <React.Fragment>
+    <>
       <Button
         label="Não"
         icon="pi pi-times"
@@ -281,17 +281,16 @@ export default function ListarParceiros() {
         severity="danger"
         onClick={deletePartner}
       />
-    </React.Fragment>
+    </>
   );
 
-  const formatArray = (rowData, attribute) => {
-    return (rowData[attribute] || []).map((item, index) => (
+  const formatArray = (rowData, attribute) =>
+    (rowData[attribute] || []).map((item, index) => (
       <React.Fragment key={index}>
         {item}
         <br />
       </React.Fragment>
     ));
-  };
 
   return (
     <div>
@@ -311,40 +310,18 @@ export default function ListarParceiros() {
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           currentPageReportTemplate="{first} ao {last} de {totalRecords} parceiros"
         >
-          <Column
-            field="id"
-            header="Código"
-            sortable
-            style={{ minWidth: "12rem" }}
-          ></Column>
-          <Column
-            field="name"
-            header="Nome"
-            sortable
-            style={{ minWidth: "16rem" }}
-          ></Column>
-          <Column
-            field="description"
-            header="Descrição"
-            sortable
-            style={{ minWidth: "10rem" }}
-          ></Column>
+          <Column field="id" header="Código" sortable />
+          <Column field="fullName" header="Nome" sortable />
+          <Column field="description" header="Descrição" sortable />
           <Column
             header="Clientes"
             body={(rowData) => formatArray(rowData, "clients")}
-            sortable
-            style={{ minWidth: "10rem" }}
-          ></Column>
+          />
           <Column
             header="Projetos"
             body={(rowData) => formatArray(rowData, "projects")}
-            sortable
-            style={{ minWidth: "10rem" }}
-          ></Column>
-          <Column
-            body={actionBodyTemplate}
-            style={{ minWidth: "12rem" }}
-          ></Column>
+          />
+          <Column body={actionBodyTemplate} />
         </DataTable>
       </div>
 
@@ -358,69 +335,27 @@ export default function ListarParceiros() {
         footer={partnerDialogFooter}
         onHide={hideDialog}
       >
-        <div className="field">
-          <label htmlFor="name" className="font-bold">
-            Nome
-          </label>
-          <InputText
-            id="name"
-            value={partner.name}
-            onChange={(e) => onInputChange(e, "name")}
-            autoFocus
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="description" className="font-bold">
-            Descrição
-          </label>
-          <InputTextarea
-            id="description"
-            value={partner.description}
-            onChange={(e) => onInputChange(e, "description")}
-            rows={3}
-            cols={20}
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="client" className="font-bold">
-            Cliente
-          </label>
-          <InputText
-            id="client"
-            value={partner.client}
-            onChange={(e) => onInputChange(e, "client")}
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="client2" className="font-bold">
-            Cliente 2
-          </label>
-          <InputText
-            id="client2"
-            value={partner.client2}
-            onChange={(e) => onInputChange(e, "client2")}
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="project" className="font-bold">
-            Projeto
-          </label>
-          <InputText
-            id="project"
-            value={partner.project}
-            onChange={(e) => onInputChange(e, "project")}
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="project2" className="font-bold">
-            Projeto 2
-          </label>
-          <InputText
-            id="project2"
-            value={partner.project2}
-            onChange={(e) => onInputChange(e, "project2")}
-          />
-        </div>
+        {[
+          "firstName",
+          "lastName",
+          "age",
+          "client",
+          "client2",
+          "project",
+          "project2",
+        ].map((field) => (
+          <div className="field" key={field}>
+            <label htmlFor={field} className="font-bold">
+              {field.charAt(0).toUpperCase() +
+                field.slice(1).replace(/[0-9]/g, " $&")}
+            </label>
+            <InputText
+              id={field}
+              value={partner[field]}
+              onChange={(e) => onInputChange(e, field)}
+            />
+          </div>
+        ))}
       </Dialog>
 
       <Dialog
@@ -439,8 +374,12 @@ export default function ListarParceiros() {
           />
           {partner && (
             <span>
-              Tem certeza que deseja excluir o seguinte parceiro: <br></br>
-              <b>{partner.name}</b>?
+              Tem certeza que deseja excluir o parceiro:
+              <br />
+              <b>
+                {partner.firstName} {partner.lastName}
+              </b>
+              ?
             </span>
           )}
         </div>

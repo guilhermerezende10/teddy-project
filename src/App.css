@@ -24,16 +24,13 @@
 }
 .p-button {
   background-color: #410b8c;
+  margin-top: 10px;
 }
 
 .p-button-success:hover,
 .btn-entrar:hover,
 .btn-orange:hover {
-  background-color: #410b8c;
-  color: aliceblue;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  transform: scale(1.1);
+  background-color: #230055;
 }
 
 .btn-red-not-bg {

@@ -1,39 +1,36 @@
-import http from "../http-common";
+// src/services/parceiros.service.jsx
+import axios from "axios";
 
-const url = "https://dummyjson.com/users";
+const API_URL = "https://dummyjson.com/users"; // ou sua API real
 
-class ParceirosService {
-  getParceiros() {
-    return fetch(url)
-      .then((response) => response.json())
-      .then((data) => data.users); // DummyJSON retorna { users: [...] }
-  }
+const getParceiros = async () => {
+  const response = await axios.get(API_URL);
+  return response.data.users || []; // dummyjson retorna { users: [...] }
+};
 
-  getParceiroById(id) {
-    return fetch(`${url}/${id}`).then((response) => response.json());
-  }
+const postParceiro = async (parceiro) => {
+  const response = await axios.post(API_URL + "/add", parceiro, {
+    headers: { "Content-Type": "application/json" },
+  });
+  return response.data;
+};
 
-  postParceiro(data) {
-    return fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    }).then((response) => response.json());
-  }
+const putParceiro = async (id, parceiro) => {
+  const response = await axios.put(`${API_URL}/${id}`, parceiro, {
+    headers: { "Content-Type": "application/json" },
+  });
+  return response.data;
+};
 
-  putParceiro(id, data) {
-    return fetch(`${url}/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    }).then((response) => response.json());
-  }
+const deleteParceiroById = async (id) => {
+  await axios.delete(`${API_URL}/${id}`);
+};
 
-  deleteParceiroById(id) {
-    return fetch(`${url}/${id}`, { method: "DELETE" }).then((response) =>
-      response.json()
-    );
-  }
-}
+const ParceirosService = {
+  getParceiros,
+  postParceiro,
+  putParceiro,
+  deleteParceiroById,
+};
 
-export default new ParceirosService();
+export default ParceirosService;

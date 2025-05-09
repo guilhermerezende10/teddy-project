@@ -290,8 +290,7 @@ export default function ListarEmpresasExternas() {
 
   const onCategoryChange = (e) => {
     let _company = { ...company };
-
-    _company["isActive"] = e.value;
+    _company["status"] = e.value;
     setCompany(_company);
   };
 
@@ -403,7 +402,7 @@ export default function ListarEmpresasExternas() {
                 name="status"
                 value="Ativa"
                 onChange={onCategoryChange}
-                checked={company.status || company.status === "Ativa"}
+                checked={company.status === "Ativa"}
               />
               <label className="mb-0" htmlFor="status">
                 Ativa

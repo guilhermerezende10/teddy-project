@@ -1,65 +1,72 @@
-import React from 'react';
-import { Card } from 'primereact/card';
-import { Avatar } from 'primereact/avatar';
-import profileImage from '../../assets/gymtech.png';
-import 'primeflex/primeflex.css';
-import { Button } from 'primereact/button';
-import Curriculo from '../../assets/Curriculo_Kaya_Haufe.pdf'
+import React from "react";
+import { Card } from "primereact/card";
+import { Avatar } from "primereact/avatar";
+import profileImage from "../../assets/gymtech.png";
+import "primeflex/primeflex.css";
+import { Button } from "primereact/button";
+import Curriculo from "../../assets/Curriculo_Kaya_Haufe.pdf";
 
 export default function Sobre() {
-  const header = <h1 className='mt-0'>Aplicação de Gestão de Empresas Externas e Parceiros</h1>;
-  const footer = (
-    <div className="flex flex-column align-items-center">
-      <Avatar image={profileImage} size="xlarge" shape="circle" />
-      <label className="mt-3">Desenvolvido por Kayã Haufe.</label>
-
-      <span className='mt-3'>
-        <Button label="LinkedIn" icon="pi pi-linkedin" className="p-button-outlined linkedin-button mr-3" onClick={() => window.open('https://www.linkedin.com/in/kayahaufe')} />
-
-        <a href={Curriculo} download="Curriculo_Kaya_Haufe.pdf">
-          <Button label="Currículo" icon="pi pi-download" className="p-button-success" />
-        </a>
-      </span>
-    </div>
+  const header = (
+    <h1 className="mt-0">
+      Aplicação de Gestão de Empresas Externas e Parceiros
+    </h1>
   );
 
   return (
     <div className="sobre flex justify-content-center align-items-center">
-      <Card title={header} footer={footer}>
-        <section>
-          <h2>Visão Geral</h2>
+      <Card title={header}>
+        <section id="sobre">
+          <h2>Sobre o Projeto</h2>
           <p>
-            A aplicação de <strong>Gestão de Empresas Externas e Parceiros</strong> é uma solução voltada para o gerenciamento
-            e administração de dados de empresas parceiras e colaboradores. O sistema permite que os usuários realizem o
-            cadastro, edição e exclusão de empresas externas e parceiros, com funcionalidades adicionais como filtragem de dados,
-            paginação e suporte a operações CRUD (Criar, Ler, Atualizar e Deletar).
+            O projeto tem como objetivo gerar dados fictícios de empresas,
+            facilitando a criação de protótipos e testes de sistemas para que
+            Academias cadastrem e administrem seus parceiros e as empresas com
+            vínculos. Utilizando uma API personalizada, o sistema oferece
+            informações como nome da empresa, quantidade de funcionários e
+            outros.
           </p>
         </section>
 
-        <section>
+        <section id="funcionalidades">
+          <h2>Funcionalidades</h2>
+          <ul>
+            <li>
+              <strong>Personalização:</strong> Possibilidade de customizar a
+              quantidade e o tipo de dados gerados.
+            </li>
+            <li>
+              <strong>Facilidade de Integração:</strong> A API foi desenvolvida
+              para fácil integração com outras aplicações.
+            </li>
+          </ul>
+        </section>
+
+        <section id="tecnologias">
           <h2>Tecnologias Utilizadas</h2>
+          <p>
+            O projeto foi desenvolvido utilizando diversas tecnologias modernas
+            para garantir uma experiência eficiente e de alta qualidade.
+          </p>
           <ul>
-            <li>React para a construção da interface do usuário</li>
-            <li>PrimeReact para componentes ricos e estilização</li>
-            <li>Integração com APIs RESTful para CRUD de dados</li>
-            <li>Login com armazenamento em cookie e local storage</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Funcionalidades Principais</h2>
-          <ul>
-            <li>Cadastro e edição de empresas externas e parceiros</li>
-            <li>Suporte a filtragem e busca global</li>
-            <li>Paginação dinâmica para grandes volumes de dados</li>
-            <li>Feedbacks interativos com Toasts para ações bem-sucedidas</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Observação</h2>
-          <ul>
-            <li>Essa é a primeira vez que codifico em ReactJS. Programei 2 anos em AngularJS e depois fiquei 2 anos na infra (experiência adquirida no Banco Safra), portanto, sei que o código possui melhorias a serem feitas e não está no melhor clean code, mas isso se deve ao fato de nunca ter usado a linguagem e ter que desenvolver essa aplicação em 4 dias.</li>
+            <li>
+              <strong>Backend:</strong> Node.js.
+            </li>
+            <li>
+              <strong>Banco de Dados:</strong> Firestore e JSON Server.
+            </li>
+            <li>
+              <strong>Geração de Dados:</strong> DummyJson para gerar dados
+              falsos realistas.
+            </li>
+            <li>
+              <strong>Frontend:</strong> React para construção da interface de
+              visualização e interação com a API.
+            </li>
+            <li>
+              <strong>Testes:</strong> Jest e Postman para garantir que a API e
+              suas funcionalidades estejam funcionando corretamente.
+            </li>
           </ul>
         </section>
       </Card>
