@@ -4,7 +4,7 @@ import { InputText } from "primereact/inputtext";
 import { Card } from "primereact/card";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase"; // ajuste conforme a localização
+import { auth } from "../../firebase";
 import "./cadastro.css";
 
 export default function Cadastro() {

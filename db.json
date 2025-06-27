@@ -5,7 +5,7 @@
       "nome": "Microsoft",
       "empresa": "Microsoft Corporation",
       "numColaboradores": 220000,
-      "status": true
+      "status": "Ativa"
     },
     {
       "id": "23634",
@@ -16,10 +16,10 @@
     },
     {
       "id": "23635",
-      "nome": "Amazon",
+      "nome": "Amazon ",
       "empresa": "Amazon.com, Inc.",
       "numColaboradores": 1600000,
-      "status": false
+      "status": "Inativa"
     },
     {
       "id": "23636",
